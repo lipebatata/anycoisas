@@ -1,24 +1,49 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-
 public class batalha : MonoBehaviour
 {
-    public class Personagem
+    public SistemaDeVida sistemaDeVidaAmigo;
+    public SistemaDeVida sistemaDeVidaInimigo;
+    int vidaInimigo = 100;
+    int vidaAmigo = 100;
+    int danoInimigo = 10;
+    int danoAmigo = 20;
+    private AudioSource source;
+    public void Atacar()
     {
-        int vida = 100;
-        int dano = 10;
+       vidaInimigo -= danoAmigo;
+        sistemaDeVidaInimigo.vida = vidaInimigo;
 
-        void Atacar()
+        if (vidaInimigo < 1)
         {
-            vida = vida - dano;
-            if (vida < 1)
-            {
-                SceneManager.LoadScene("exploracao", LoadSceneMode.Additive);
-            }
+            Vencer();
         }
+
+        vidaAmigo -= danoInimigo;
+        sistemaDeVidaAmigo.vida = vidaAmigo;
+
+        if (vidaAmigo < 1)
+        {
+            Morrer();
+        }
+
     }
 
+    private void Vencer()
+    {
+        SceneManager.LoadScene("exploracao", LoadSceneMode.Single);
+    }
+
+    void Morrer()
+    {
+        SceneManager.LoadScene("menu", LoadSceneMode.Single);
+
+    }
+    public void Fugir()
+    {
+        
+        SceneManager.LoadScene("exploracao", LoadSceneMode.Single);
+    }
 }
